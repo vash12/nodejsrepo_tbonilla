@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-microservice-deployment
+  namespace: nodejsprojects
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs-microservice
+  template:
+    metadata:
+      labels:
+        app: nodejs-microservice
+    spec:
+      containers:
+      - name: nodejs-microservice-container
+        image: tbonilla1287/demoNode
+        ports:
+        - containerPort: 3000
+ 
+---
+ 
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-microservice-service
+  namespace: nodejsprojects
+spec:
+  selector:
+    app: nodejs-microservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+ 
